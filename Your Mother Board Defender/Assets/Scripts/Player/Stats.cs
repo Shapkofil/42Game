@@ -5,7 +5,7 @@ using UnityEngine;
 public class Stats : MonoBehaviour {
 
     public float health = 10f;
-
+    public DeadBody deadbody;
 
     public void DamagePlayer(float damage)
     {
@@ -25,6 +25,7 @@ public class Stats : MonoBehaviour {
 
     public void DewIt()
     {
+        deadbody.LeaveCorpse(transform.position);
         Destroy(gameObject);
     }
 }

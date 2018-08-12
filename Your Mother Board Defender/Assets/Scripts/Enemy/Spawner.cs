@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 using UnityEngine;
+
 
 public class Spawner : MonoBehaviour {
 
     public Object enemy;
     public Rigidbody2D target;
-    public Transform[] spawnPoint;
+
+    public DeadBody deadbody;
+    public Tilemap tilemap;
 
     public float spawnRate = 4;
     float timeAlways;
@@ -15,6 +19,7 @@ public class Spawner : MonoBehaviour {
     {
         GameObject clone = Instantiate(enemy, point, Quaternion.identity) as GameObject;
         clone.GetComponent<BrainlessarcherController>().target = target;
+        clone.GetComponent<Stats>().deadbody = deadbody;
     }
 
     void Start()
@@ -27,7 +32,9 @@ public class Spawner : MonoBehaviour {
         if (timeAlways + spawnRate <= Time.time)
         {
             timeAlways = Time.time;
-            Spawn(spawnPoint[(int)Random.Range(0,2)].position);
+            int index = (int)Random.Range(0, deadbody.SpawnPoints.Count - 1);
+            if (index < 0) index = 0;
+            if(deadbody.SpawnPoints.Count!=0)Spawn(deadbody.SpawnPoints[index]);
         }
     }
 }
